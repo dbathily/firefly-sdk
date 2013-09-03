@@ -32,9 +32,9 @@ package com.in4ray.gaming.effects
 		 * @param fromWidth Animate from width.
 		 * @param fromHeight Animate from height.
 		 */		
-		public function Resize(target:IVisualElement=null, duration:Number=NaN, toWidth:Number=NaN, toHeight:Number=NaN, fromWidth:Number = NaN, fromHeight:Number = NaN)
+		public function Resize(target:IVisualElement=null, duration:Number=NaN, toWidth:Number=NaN, toHeight:Number=NaN, fromWidth:Number = NaN, fromHeight:Number = NaN, useTheJuggler:Boolean = true)
 		{
-			super(target, duration);
+			super(target, duration, useTheJuggler);
 			
 			this.toWidth = toWidth;
 			this.toHeight = toHeight;
@@ -71,7 +71,7 @@ package com.in4ray.gaming.effects
 			
 			if(!isNaN(delay))
 				tween.delay = delay/1000;
-			tween.onComplete = tweenComplete;
+            setTweenCallbacks(tween);
 			if(!isNaN(toWidth))
 				tween.animate("valueWidth", toWidth);
 			if(!isNaN(toHeight))

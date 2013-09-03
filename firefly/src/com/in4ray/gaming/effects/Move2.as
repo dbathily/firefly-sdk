@@ -33,10 +33,11 @@ package com.in4ray.gaming.effects
 		 * @param toY Animate to y layout.
 		 * @param fromX Animate from x layout.
 		 * @param fromY Animate from y layout.
+         * @param useTheJuggler If false, the tween won't be add to the Juggler. You can play the tween manually using {@link advanceTime}
 		 */		
-		public function Move2(target:IVisualElement=null, duration:Number=NaN, toX:ILayout=null, toY:ILayout=null, fromX:ILayout=null, fromY:ILayout=null)
+		public function Move2(target:IVisualElement=null, duration:Number=NaN, toX:ILayout=null, toY:ILayout=null, fromX:ILayout=null, fromY:ILayout=null, useTheJuggler:Boolean = true)
 		{
-			super(target, duration);
+			super(target, duration, useTheJuggler);
 			
 			this.toX = toX;
 			this.toY = toY;
@@ -124,7 +125,9 @@ package com.in4ray.gaming.effects
 			
 			if(!isNaN(delay))
 				tween.delay = delay/1000;
-			tween.onComplete = tweenComplete;
+
+            setTweenCallbacks(tween);
+
 			if(!isNaN(toXValue))
 				tween.animate("valueX", toXValue);
 			if(!isNaN(toYValue))

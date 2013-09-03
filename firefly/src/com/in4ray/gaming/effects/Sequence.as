@@ -174,10 +174,10 @@ package com.in4ray.gaming.effects
 		private function playInternal():void
 		{
 			currentIndex++;
-			
+
 			if(currentIndex == animations.length && loop)
 				currentIndex = 0;
-			
+
 			if(currentIndex < animations.length)
 			{
 				var animation:IAnimation = animations[currentIndex];
@@ -196,8 +196,11 @@ package com.in4ray.gaming.effects
 				
 				if(animation.isDefaultJuggler())
 					animation.juggler = juggler;
-				
-				//animation.loop = loop;
+
+                if(currentIndex == 0)
+                    animation.startCallback = startCallback;
+
+                //animation.loop = loop;
 				animation.completeCallback = playInternal;
 				
 				animation.play();
@@ -255,8 +258,18 @@ package com.in4ray.gaming.effects
 				animations[currentIndex].stop();
 			}
 		}
-		
-		/**
+
+        /**
+         * @inheritDoc
+         */
+        public function advanceTime(time:Number):void {
+            if(currentIndex < animations.length)
+            {
+                animations[currentIndex].advanceTime(time);
+            }
+        }
+
+        /**
 		 * @inheritDoc 
 		 */	
 		public function get isPlaying():Boolean
@@ -268,8 +281,20 @@ package com.in4ray.gaming.effects
 			
 			return false;
 		}
-		
-		private var _completeCallback:Function;
+
+        /**
+         * @inheritDoc
+         */
+        public function get isComplete():Boolean {
+            if(currentIndex < animations.length)
+            {
+                return animations[currentIndex].isComplete;
+            }
+
+            return true;
+        }
+
+        private var _completeCallback:Function;
 		
 		/**
 		 * @inheritDoc 
@@ -297,8 +322,23 @@ package com.in4ray.gaming.effects
 		{
 			_completeArgs = value;
 		}
-		
-		private var _transition:String;
+
+        private var _startCallback:Function;
+
+        /**
+         * @inheritDoc
+         */
+        public function get startCallback():Function
+        {
+            return _startCallback;
+        }
+
+        public function set startCallback(value:Function):void
+        {
+            _startCallback = value;
+        }
+
+        private var _transition:String;
 		/**
 		 * @inheritDoc 
 		 */	

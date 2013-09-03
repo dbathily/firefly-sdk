@@ -27,9 +27,9 @@ package com.in4ray.gaming.effects
 		 * @param toScale Animate to scale.
 		 * @param fromScale Animate from scale.
 		 */		
-		public function Scale(target:IVisualElement=null, duration:Number=NaN, toScale:Number=NaN, fromScale:Number = NaN)
+		public function Scale(target:IVisualElement=null, duration:Number=NaN, toScale:Number=NaN, fromScale:Number = NaN, useTheJuggler:Boolean = true)
 		{
-			super(target, duration);
+			super(target, duration, useTheJuggler);
 			
 			this.toScale = toScale;
 			this.fromScale = fromScale;

@@ -26,10 +26,11 @@ package com.in4ray.gaming.effects
 		 * @param duration Duration in milliseconds.
 		 * @param toAlpha Animate to this alpha value.
 		 * @param fromAlpha Animate from this alpha value.
+         * @param useTheJuggler If false, the tween won't be add to the Juggler. You can play the tween manually using {@link advanceTime}
 		 */		
-		public function Fade(target:IVisualElement=null, duration:Number=NaN, toAlpha:Number=NaN, fromAlpha:Number = NaN)
+		public function Fade(target:IVisualElement=null, duration:Number=NaN, toAlpha:Number=NaN, fromAlpha:Number = NaN, useTheJuggler:Boolean = true)
 		{
-			super(target, duration);
+			super(target, duration, useTheJuggler);
 			
 			this.toAlpha = toAlpha;
 			this.fromAlpha = fromAlpha;
@@ -52,7 +53,7 @@ package com.in4ray.gaming.effects
 		{
 			var tween:Tween = super.createTween();
 			tween.fadeTo(toAlpha);
-			
+
 			return tween;
 		}
 		

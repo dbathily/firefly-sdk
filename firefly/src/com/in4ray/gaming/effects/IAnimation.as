@@ -42,8 +42,15 @@ package com.in4ray.gaming.effects
 		 * Jump effect to the end position. 
 		 */		
 		function end():void;
-		
-		/**
+
+
+        /**
+         * Advance the time by a number of seconds. @param time in seconds.
+         * */
+        function advanceTime(time:Number):void;
+
+
+        /**
 		 * Dispose anomation. 
 		 */		
 		function dispose():void;
@@ -70,7 +77,12 @@ package com.in4ray.gaming.effects
 		 * Is animation currently playing. 
 		 */		
 		function get isPlaying():Boolean;
-		
+
+        /**
+         * Is animation completed.
+         */
+        function get isComplete():Boolean;
+
 		/**
 		 * Loop animation. 
 		 */		
@@ -83,6 +95,12 @@ package com.in4ray.gaming.effects
 		 */		
 		function get completeCallback():Function;
 		function set completeCallback(value:Function):void;
+
+        /**
+         * Function that will be called when animation starts.
+         */
+        function get startCallback():Function;
+        function set startCallback(value:Function):void;
 		
 		/**
 		 * Parameters for complete callback. 

@@ -25,11 +25,13 @@ package com.in4ray.gaming.effects
 		 *  
 		 * @param target Target of animation.
 		 * @param duration Duration in milliseconds.
-		 */		
-		public function AnimationBase(target:Object, duration:Number)
+         * @param useTheJuggler If false, the tween won't be add to the Juggler. You can play the tween manually using {@link advanceTime}
+		 */
+		public function AnimationBase(target:Object, duration:Number, useTheJuggler:Boolean)
 		{
 			this.target = target;
 			this.duration = duration;
+            this.useTheJuggler = useTheJuggler;
 		}
 		
 		private var _tween:Tween;
@@ -93,6 +95,15 @@ package com.in4ray.gaming.effects
 		{
 			return _isPlaying;
 		}
+
+        private var _isComplete:Boolean
+
+        /**
+         * @inheritDoc
+         */
+        public function get isComplete():Boolean {
+            return _isComplete;
+        }
 		
 		/**
 		 * @private
@@ -107,9 +118,6 @@ package com.in4ray.gaming.effects
 			return _juggler ? _juggler : Starling.juggler;
 		}
 
-		/**
-		 * @private
-		 */
 		public function set juggler(value:Juggler):void
 		{
 			_juggler = value;
@@ -120,6 +128,7 @@ package com.in4ray.gaming.effects
 			return _juggler == null;
 		}
 
+
 		/**
 		 * Create Tween object. 
 		 */		
@@ -129,9 +138,14 @@ package com.in4ray.gaming.effects
 			
 			if(!isNaN(delay))
 				tween.delay = delay/1000;
-			tween.onComplete = tweenComplete;
+            setTweenCallbacks(tween);
 			return tween;
 		}
+
+        protected function setTweenCallbacks(tween:Tween):void {
+            tween.onStart = tweenStart;
+            tween.onComplete = tweenComplete;
+        }
 
 		/**
 		 * Tween animation complete 
@@ -142,7 +156,9 @@ package com.in4ray.gaming.effects
 				play();
 			else 
 			{
-				juggler.remove(tween);
+                _isComplete = true;
+
+				removeFromJuggler();
 				_tween = null;
 				if(completeCallback != null)
 					completeCallback.apply(null, completeArgs);
@@ -152,9 +168,27 @@ package com.in4ray.gaming.effects
 				
 				_isPlaying = false;
 			}
-				
 		}
-		
+
+        /**
+         * Tween animation complete
+         */
+        protected function tweenStart():void
+        {
+            if(startCallback != null)
+                startCallback.apply(null);
+        }
+
+        protected function addToJuggler():void {
+            if(_useTheJuggler)
+                juggler.add(tween);
+        }
+
+        protected function removeFromJuggler():void {
+            if(_useTheJuggler)
+                juggler.remove(tween);
+        }
+
 		/**
 		 * @inheritDoc 
 		 */
@@ -164,8 +198,9 @@ package com.in4ray.gaming.effects
 				stop();
 			
 			_tween = createTween();
-			juggler.add(tween);
+			addToJuggler();
 			_isPlaying = true;
+            _isComplete = false;
 			onPause = false;
 		}
 		
@@ -188,7 +223,7 @@ package com.in4ray.gaming.effects
 		{
 			if(_isPlaying)
 			{
-				juggler.remove(tween);
+				removeFromJuggler();
 				_isPlaying = false;
 				onPause = true;
 			}
@@ -203,7 +238,7 @@ package com.in4ray.gaming.effects
 		{
 			if(onPause)
 			{
-				juggler.add(tween);
+                addToJuggler();
 				_isPlaying = true;
 				onPause = false;
 			}
@@ -216,7 +251,7 @@ package com.in4ray.gaming.effects
 		{
 			if(_isPlaying)
 			{
-				juggler.remove(tween);
+                removeFromJuggler();
 				_isPlaying = false;
 				onPause = false;
 				if(tween)
@@ -224,8 +259,17 @@ package com.in4ray.gaming.effects
 				_tween = null;
 			}
 		}
-		
-		private var _target:Object;
+
+        /**
+         * @inheritDoc
+         */
+        public function advanceTime(time:Number):void {
+            _tween.advanceTime(time);
+        }
+
+        private var _target:Object;
+
+        private var _useTheJuggler:Boolean;
 
 		/**
 		 * @inheritDoc 
@@ -239,8 +283,16 @@ package com.in4ray.gaming.effects
 		{
 			_target = value;
 		}
-		
-		private var _completeCallback:Function;
+
+        public function get useTheJuggler():Boolean {
+            return _useTheJuggler;
+        }
+
+        public function set useTheJuggler(value:Boolean):void {
+            _useTheJuggler = value;
+        }
+
+        private var _completeCallback:Function;
 
 		/**
 		 * @inheritDoc 
@@ -254,7 +306,7 @@ package com.in4ray.gaming.effects
 		{
 			_completeCallback = value;
 		}
-		
+
 		private var _completeArgs:Array;
 		
 		/**
@@ -269,8 +321,23 @@ package com.in4ray.gaming.effects
 		{
 			_completeArgs = value;
 		}
-		
-		private var _transition:String;
+
+        private var _startCallback:Function;
+
+        /**
+         * @inheritDoc
+         */
+        public function get startCallback():Function
+        {
+            return _startCallback;
+        }
+
+        public function set startCallback(value:Function):void
+        {
+            _startCallback = value;
+        }
+
+        private var _transition:String;
 		
 		/**
 		 * @inheritDoc 
@@ -310,5 +377,6 @@ package com.in4ray.gaming.effects
 		{
 			_disposeOnComplete = value;
 		}
-	}
+
+    }
 }

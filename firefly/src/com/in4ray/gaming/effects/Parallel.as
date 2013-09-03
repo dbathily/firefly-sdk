@@ -10,10 +10,10 @@
 
 package com.in4ray.gaming.effects
 {
-	import starling.animation.Juggler;
-	import starling.core.Starling;
-	
-	/**
+import starling.animation.Juggler;
+import starling.core.Starling;
+
+/**
 	 * Manager that plays several animations simultaneously. 
 	 */	
 	public class Parallel implements IAnimation
@@ -177,11 +177,12 @@ package com.in4ray.gaming.effects
 					animation.juggler = juggler;
 				
 				animation.loop = loop;
+                animation.startCallback = animationStart;
 				animation.completeCallback = animationComplete;
 				animation.play();
 			}
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -225,9 +226,19 @@ package com.in4ray.gaming.effects
 				animation.stop();
 			}
 		}
-		
-		/**
-		 * @inheritDoc
+
+        /**
+         * @inheritDoc
+         */
+        public function advanceTime(time:Number):void {
+            for each (var animation:IAnimation in animations)
+            {
+                animation.advanceTime(time);
+            }
+        }
+
+        /**
+         * @inheritDoc
 		 */
 		public function get isPlaying():Boolean
 		{
@@ -239,8 +250,20 @@ package com.in4ray.gaming.effects
 			
 			return false;
 		}
-		
-		private var completeCount:uint = 0;
+
+        /**
+         * @inheritDoc
+         */
+        public function get isComplete():Boolean {
+            for each (var animation:IAnimation in animations)
+            {
+                if(!animation.isComplete)
+                    return false;
+            }
+            return true;
+        }
+
+        private var completeCount:uint = 0;
 		private function animationComplete():void
 		{
 			completeCount++;
@@ -254,8 +277,15 @@ package com.in4ray.gaming.effects
 					dispose();
 			}
 		}
-		
-		private var _completeCallback:Function;
+        private var startCount:uint = 0;
+        private function animationStart():void {
+            if(startCount == 0 && startCallback)
+                startCallback.apply(null);
+            startCount++;
+        }
+
+
+        private var _completeCallback:Function;
 		
 		/**
 		 * @inheritDoc
@@ -269,7 +299,7 @@ package com.in4ray.gaming.effects
 		{
 			_completeCallback = value;
 		}
-		
+
 		private var _completeArgs:Array;
 		
 		/**
@@ -284,8 +314,23 @@ package com.in4ray.gaming.effects
 		{
 			_completeArgs = value;
 		}
-		
-		private var _transition:String;
+
+        private var _startCallback:Function;
+
+        /**
+         * @inheritDoc
+         */
+        public function get startCallback():Function
+        {
+            return _startCallback;
+        }
+
+        public function set startCallback(value:Function):void
+        {
+            _startCallback = value;
+        }
+
+        private var _transition:String;
 		
 		/**
 		 * @inheritDoc

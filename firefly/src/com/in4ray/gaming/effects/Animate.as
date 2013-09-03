@@ -32,9 +32,9 @@ animation.play();
 		 * @param toValue Animate property to this value.
 		 * @param fromValue Animate property from this value.
 		 */		
-		public function Animate(target:Object=null, duration:Number=NaN, property:String="", toValue:Number=NaN, fromValue:Number = NaN)
+		public function Animate(target:Object=null, duration:Number=NaN, property:String="", toValue:Number=NaN, fromValue:Number = NaN, useTheJuggler:Boolean = true)
 		{
-			super(target, duration);
+			super(target, duration, useTheJuggler);
 			
 			this.property = property;
 			this.toValue = toValue;

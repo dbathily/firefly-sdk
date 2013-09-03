@@ -15,9 +15,9 @@ package com.in4ray.gaming.effects
 		 * @param fromValue Animate from rotation.
 		 * @param aroundCenter Rotate tarhet around its center.
 		 */		
-		public function Rotate(target:IVisualElement=null, duration:Number=NaN, toValue:Number=NaN, fromValue:Number = NaN, aroundCenter:Boolean = true)
+		public function Rotate(target:IVisualElement=null, duration:Number=NaN, toValue:Number=NaN, fromValue:Number = NaN, aroundCenter:Boolean = true, useTheJuggler:Boolean = true)
 		{
-			super(target, duration);
+			super(target, duration, useTheJuggler);
 			this.aroundCenter = aroundCenter;
 			
 			this.toValue = toValue;
