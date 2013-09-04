@@ -10,29 +10,29 @@
 
 package com.in4ray.gaming.components.flash
 {
-	
-	import com.in4ray.gaming.gp_internal;
-	import com.in4ray.gaming.components.RootView;
-	import com.in4ray.gaming.components.Sprite;
-	import com.in4ray.gaming.consts.TextureConsts;
-	import com.in4ray.gaming.events.StarlingEvent;
-	import com.in4ray.gaming.layouts.$height;
-	import com.in4ray.gaming.layouts.$width;
-	import com.in4ray.gaming.core.GameGlobals;
-	
-	import flash.display.StageAlign;
-	import flash.display.StageQuality;
-	import flash.display.StageScaleMode;
-	import flash.events.Event;
-	import flash.events.TimerEvent;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	import flash.utils.Timer;
-	
-	import starling.core.Starling;
-	import starling.events.Event;
-	
-	use namespace gp_internal;
+
+import com.in4ray.gaming.components.RootView;
+import com.in4ray.gaming.components.Sprite;
+import com.in4ray.gaming.consts.TextureConsts;
+import com.in4ray.gaming.core.GameGlobals;
+import com.in4ray.gaming.events.StarlingEvent;
+import com.in4ray.gaming.gp_internal;
+import com.in4ray.gaming.layouts.$height;
+import com.in4ray.gaming.layouts.$width;
+
+import flash.display.StageAlign;
+import flash.display.StageQuality;
+import flash.display.StageScaleMode;
+import flash.events.Event;
+import flash.events.TimerEvent;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+import flash.utils.Timer;
+
+import starling.core.Starling;
+import starling.events.Event;
+
+use namespace gp_internal;
 	
 	/**
 	 * Base game class, all games should be extended from it. 
@@ -82,18 +82,29 @@ public class MainView extends Sprite
 		public function GameApplication()
 		{
 			super();
-			
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			stage.quality = StageQuality.BEST;
-			
-			Starling.handleLostContext = true;
-			
-			GameGlobals.preinitialize(this);
-			
-			stage.addEventListener(flash.events.Event.RESIZE, resizeHandler);
-			stage.addEventListener(flash.events.Event.ADDED, addedHandler);
+            if(stage) init();
+            else addEventListener(flash.events.Event.ADDED_TO_STAGE, onAddedToStage);
 		}
+
+        private function onAddedToStage(event:flash.events.Event):void {
+            removeEventListener(flash.events.Event.ADDED_TO_STAGE, onAddedToStage);
+            init();
+        }
+
+        private function init():void {
+
+            stage.scaleMode = StageScaleMode.NO_SCALE;
+            stage.align = StageAlign.TOP_LEFT;
+            stage.quality = StageQuality.BEST;
+
+            Starling.handleLostContext = true;
+
+            GameGlobals.preinitialize(this);
+
+            stage.addEventListener(flash.events.Event.RESIZE, resizeHandler);
+
+            showNextSplash();
+        }
 		
 		/**
 		 * Specify design size for textures (in most cases it is size of background texture).
@@ -193,12 +204,6 @@ public class CompanySplash extends Splash
 		{
 			splash.duration = duration;
 			splashScreens.push(splash);
-		}
-		
-		private function addedHandler(event:flash.events.Event):void
-		{
-			stage.removeEventListener(flash.events.Event.ADDED, addedHandler);
-			showNextSplash();
 		}
 		
 		/**
