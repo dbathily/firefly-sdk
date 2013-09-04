@@ -82,13 +82,17 @@ public class MainView extends Sprite
 		public function GameApplication()
 		{
 			super();
-            if(stage) init();
+            if(stage) {
+                init();
+                stage.addEventListener(flash.events.Event.ADDED, addedHandler);
+            }
             else addEventListener(flash.events.Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 
         private function onAddedToStage(event:flash.events.Event):void {
             removeEventListener(flash.events.Event.ADDED_TO_STAGE, onAddedToStage);
             init();
+            showNextSplash();
         }
 
         private function init():void {
@@ -102,8 +106,6 @@ public class MainView extends Sprite
             GameGlobals.preinitialize(this);
 
             stage.addEventListener(flash.events.Event.RESIZE, resizeHandler);
-
-            showNextSplash();
         }
 		
 		/**
@@ -204,6 +206,12 @@ public class CompanySplash extends Splash
 		{
 			splash.duration = duration;
 			splashScreens.push(splash);
+		}
+
+		private function addedHandler(event:flash.events.Event):void
+		{
+			stage.removeEventListener(flash.events.Event.ADDED, addedHandler);
+			showNextSplash();
 		}
 		
 		/**
