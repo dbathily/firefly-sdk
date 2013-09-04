@@ -55,7 +55,8 @@ package com.in4ray.gaming.layouts
 			
 			var px:Number = (_pivotXChanged ? _pivotX : NaN);
 			var py:Number = (_pivotYChanged ? _pivotY : NaN);
-			element.setActualPivots(px, py);
+            //FIXME https://github.com/in4ray/firefly-sdk/issues/9
+			//element.setActualPivots(px, py);
 		}
 		
 		private var _x:Number;
