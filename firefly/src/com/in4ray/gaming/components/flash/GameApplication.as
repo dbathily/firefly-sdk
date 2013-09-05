@@ -95,7 +95,7 @@ public class MainView extends Sprite
             showNextSplash();
         }
 
-        private function init():void {
+        protected function init():void {
 
             stage.scaleMode = StageScaleMode.NO_SCALE;
             stage.align = StageAlign.TOP_LEFT;
@@ -148,9 +148,10 @@ public class MainView extends Sprite
 		private function updateMainView():void
 		{
 			if(Starling.current && Starling.current.root as RootView && mainView)
-			{	
-				(Starling.current.root as RootView).removeChildren();
-				(Starling.current.root as RootView).addElement(mainView, $width(100).pct, $height(100).pct);
+			{
+                var root = Starling.current.root as RootView;
+				root.removeChildren();
+				root.addElement(mainView, $width(100).pct, $height(100).pct);
 			}
 		}
 		
