@@ -149,7 +149,7 @@ public class MainView extends Sprite
 		{
 			if(Starling.current && Starling.current.root as RootView && mainView)
 			{
-                var root = Starling.current.root as RootView;
+                var root:RootView = Starling.current.root as RootView;
 				root.removeChildren();
 				root.addElement(mainView, $width(100).pct, $height(100).pct);
 			}

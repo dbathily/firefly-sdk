@@ -11,7 +11,8 @@
 package com.in4ray.gaming.transitions
 {
 	import com.in4ray.gaming.events.ViewEvent;
-	import com.in4ray.gaming.navigation.ViewNavigator;
+import com.in4ray.gaming.navigation.View;
+import com.in4ray.gaming.navigation.ViewNavigator;
 	import com.in4ray.gaming.navigation.ViewState;
 	
 	/**
@@ -97,12 +98,12 @@ package com.in4ray.gaming.transitions
 		/**
 		 * @private
 		 */	
-		protected var _fromViewState:ViewState;
+		protected var _fromView:View;
 		
 		/**
 		 * @private
 		 */
-		protected var _toViewState:ViewState;
+		protected var _toView:View;
 		
 		/**
 		 * @private
@@ -117,21 +118,21 @@ package com.in4ray.gaming.transitions
 		/**
 		 * @inheritDoc
 		 */
-		public function play(fromViewState:ViewState, toViewState:ViewState, callBack:Function=null, ...params):void
+		public function play(fromView:View, toView:View, callBack:Function=null, ...params):void
 		{
-			_fromViewState = fromViewState;
-			_toViewState = toViewState;
+			_fromView = fromView;
+			_toView = toView;
 			
 			this.callBack = callBack;
 			this.params = params;
 			
-			_navigator.hideViewState(_fromViewState);
+			_navigator.hideView(_fromView);
 			dispatchRemoving();
 			dispatchRemoved();
-			_navigator.showViewState(_toViewState);
+			_navigator.showView(_toView);
 			dispatchAdding();
 			dispatchAdded();
-			_navigator.textureManager.switchToState(_toViewState.textureState);
+			_navigator.textureManager.switchToState(_toView.state.textureState);
 		}
 		
 		/**
@@ -155,16 +156,16 @@ package com.in4ray.gaming.transitions
 		 */
 		protected function dispatchRemoving():void
 		{
-			if(_fromViewState)
-				_fromViewState.getView().dispatchEvent(new ViewEvent(ViewEvent.REMOVING_FROM_NAVIGATOR));
+			if(_fromView)
+				_fromView.view.dispatchEvent(new ViewEvent(ViewEvent.REMOVING_FROM_NAVIGATOR));
 		}
 		/**
 		 * @inheritDoc
 		 */
 		protected function dispatchRemoved():void
 		{
-			if(_fromViewState)
-				_fromViewState.getView().dispatchEvent(new ViewEvent(ViewEvent.REMOVED_FROM_NAVIGATOR));
+			if(_fromView)
+				_fromView.view.dispatchEvent(new ViewEvent(ViewEvent.REMOVED_FROM_NAVIGATOR));
 		}
 		
 		/**
@@ -172,8 +173,8 @@ package com.in4ray.gaming.transitions
 		 */
 		protected function dispatchAdding():void
 		{
-			if(_toViewState)
-				_toViewState.getView().dispatchEvent(new ViewEvent(ViewEvent.ADDING_TO_NAVIGATOR));
+			if(_toView)
+				_toView.view.dispatchEvent(new ViewEvent(ViewEvent.ADDING_TO_NAVIGATOR));
 		}
 		
 		/**
@@ -181,8 +182,8 @@ package com.in4ray.gaming.transitions
 		 */
 		protected function dispatchAdded():void
 		{
-			if(_toViewState)
-				_toViewState.getView().dispatchEvent(new ViewEvent(ViewEvent.ADDED_TO_NAVIGATOR));
+			if(_toView)
+				_toView.view.dispatchEvent(new ViewEvent(ViewEvent.ADDED_TO_NAVIGATOR));
 		}
 	}
 }

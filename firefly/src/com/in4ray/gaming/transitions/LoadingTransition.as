@@ -10,7 +10,8 @@
 
 package com.in4ray.gaming.transitions
 {
-	import com.in4ray.gaming.navigation.ViewState;
+import com.in4ray.gaming.navigation.View;
+import com.in4ray.gaming.navigation.ViewState;
 
 	/**
 	 * Transition that shows loading view while transiting with fade effect. 
@@ -29,7 +30,7 @@ package com.in4ray.gaming.transitions
 		{
 			super(trigger, fromState, toState);
 			
-			this.loadingViewState = loadingViewState;
+			this.loadingView = new View(loadingViewState, loadingViewState.getView(null));
 		}
 		
 		/**
@@ -56,29 +57,29 @@ package com.in4ray.gaming.transitions
 		protected var parallel:ParallelTransition;
 		
 		/**
-		 *  Loading view state that will be shown while transiting. 
+		 *  Loading view that will be shown while transiting.
 		 */		
-		public var loadingViewState:ViewState;
+		public var loadingView:View;
 		
 		/**
 		 * @inheritDoc 
 		 */		
-		override public function play(fromViewState:ViewState, toViewState:ViewState, callBack:Function=null, ...params):void
+		override public function play(fromView:View, toView:View, callBack:Function=null, ...params):void
 		{
-			_fromViewState = fromViewState;
-			_toViewState = toViewState;
+			_fromView = fromView;
+			_toView = toView;
 			
 			this.callBack = callBack;
 			this.params = params;
 			
 			_isPlaying = true;
 			
-			loadingViewState.textureState = fromViewState ? fromViewState.textureState : null;
+			loadingView.state.textureState = fromView ? fromView.state.textureState : null;
 			
 			parallel = new ParallelFadeTransition(trigger);
 			parallel.navigator = _navigator;
 			parallel.duration = duration;
-			parallel.play(_fromViewState, loadingViewState, fromTransitionComplete);
+			parallel.play(_fromView, loadingView, fromTransitionComplete);
 		}
 		
 		/**
@@ -86,7 +87,7 @@ package com.in4ray.gaming.transitions
 		 */		
 		protected function fromTransitionComplete():void
 		{
-			_navigator.textureManager.switchToStateAsync(_toViewState.textureState, textureLoaded);
+			_navigator.textureManager.switchToStateAsync(_toView.state.textureState, textureLoaded);
 		}
 		
 		/**
@@ -97,7 +98,7 @@ package com.in4ray.gaming.transitions
 			parallel = new ParallelFadeTransition(trigger);
 			parallel.navigator = _navigator;
 			parallel.duration = duration;
-			parallel.play(loadingViewState, _toViewState, toTransitionComplete);
+			parallel.play(loadingView, _toView, toTransitionComplete);
 		}
 		
 		/**

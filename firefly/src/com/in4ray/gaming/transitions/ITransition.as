@@ -10,7 +10,8 @@
 
 package com.in4ray.gaming.transitions
 {
-	import com.in4ray.gaming.navigation.ViewNavigator;
+import com.in4ray.gaming.navigation.View;
+import com.in4ray.gaming.navigation.ViewNavigator;
 	import com.in4ray.gaming.navigation.ViewState;
 
 	/**
@@ -19,7 +20,7 @@ package com.in4ray.gaming.transitions
 	public interface ITransition
 	{
 		/**
-		 * Transition from state.  
+		 * Transition from state.
 		 */		
 		function get fromState():String;
 		function set fromState(value:String):void;
@@ -49,12 +50,12 @@ package com.in4ray.gaming.transitions
 		/**
 		 * Play transition.
 		 *  
-		 * @param fromViewState Transition from state.  
-		 * @param toViewState Transition to state.  
+		 * @param fromView Transition from view.
+		 * @param toView Transition to view.
 		 * @param callBack Function that will be called on complete of playing.
 		 * @param params Parameters for callback function.
 		 */		
-		function play(fromViewState:ViewState, toViewState:ViewState, callBack:Function=null, ...params):void;
+		function play(fromView:View, toView:View, callBack:Function=null, ...params):void;
 		
 		/**
 		 * Move transition to the end state. 

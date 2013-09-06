@@ -10,13 +10,13 @@
 
 package com.in4ray.gaming.transitions
 {
-	import com.in4ray.gaming.async.callAsync;
-	import com.in4ray.gaming.components.Sprite;
-	import com.in4ray.gaming.effects.Scale;
-	
-	import starling.animation.Transitions;
-	
-	/**
+import com.in4ray.gaming.async.callAsync;
+import com.in4ray.gaming.components.Sprite;
+import com.in4ray.gaming.effects.Scale;
+
+import starling.animation.Transitions;
+
+/**
 	 * Transition that scales in popup state. 
 	 */	
 	public class PopUpTransition extends ParallelTransition
@@ -46,11 +46,12 @@ package com.in4ray.gaming.transitions
 		 */		
 		override protected function playParallel():void
 		{
-			if(_toViewState)
+			if(_toView)
 			{
-				_toViewState.getView().scaleX = _toViewState.getView().scaleY = 0.1;
-				toViewAlpha = _toViewState.getView().alpha;
-				_toViewState.getView().alpha = 0.01;
+                var v:Sprite = _toView.view;
+				v.scaleX = v.scaleY = 0.1;
+				toViewAlpha = v.alpha;
+				v.alpha = 0.01;
 			}
 			
 			callAsync(startAnimation);
@@ -61,12 +62,12 @@ package com.in4ray.gaming.transitions
 		 */	
 		protected function startAnimation():void
 		{
-			if(_toViewState)
+			if(_toView)
 			{
-				var view:Sprite = _toViewState.getView();
+				var view:Sprite = _toView.view;
 				view.setActualPivots(view.width/2, view.height/2); 
 				view.setActualPosition(view.x + view.pivotX, view.y + view.pivotY);
-				_toViewState.getView().alpha = toViewAlpha;
+				view.alpha = toViewAlpha;
 			}
 			super.playParallel();
 		}
@@ -78,15 +79,15 @@ package com.in4ray.gaming.transitions
 		{
 			super.animationComplete();
 			
-			var view:Sprite = _toViewState.getView();
+			var view:Sprite = _toView.view;
 			view.setActualPosition(view.x - view.pivotX, view.y - view.pivotY);
 			view.setActualPivots(0, 0); 
 			
-			if(_fromViewState)
-				_fromViewState.getView().scaleX = _fromViewState.getView().scaleY = 1;
+			if(_fromView)
+				_fromView.view.scaleX = _fromView.view.scaleY = 1;
 			
-			if(_toViewState)
-				_toViewState.getView().scaleX = _toViewState.getView().scaleY = 1;
+			if(_toView)
+				_toView.view.scaleX = _toView.view.scaleY = 1;
 		}
 	}
 }

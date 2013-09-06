@@ -12,7 +12,8 @@ package com.in4ray.gaming.transitions
 {
 	import com.in4ray.gaming.effects.IAnimation;
 	import com.in4ray.gaming.effects.Parallel;
-	import com.in4ray.gaming.navigation.ViewState;
+import com.in4ray.gaming.navigation.View;
+import com.in4ray.gaming.navigation.ViewState;
 
 	/**
 	 * Transition that plays parallel animations for from and to state while transiting.  
@@ -69,10 +70,10 @@ package com.in4ray.gaming.transitions
 		/**
 		 * @inheritDoc 
 		 */
-		override public function play(fromViewState:ViewState, toViewState:ViewState, callBack:Function=null, ...params):void
+		override public function play(fromView:View, toView:View, callBack:Function=null, ...params):void
 		{
-			_fromViewState = fromViewState;
-			_toViewState = toViewState;
+			_fromView = fromView;
+			_toView = toView;
 			
 			this.callBack = callBack;
 			this.params = params;
@@ -81,20 +82,20 @@ package com.in4ray.gaming.transitions
 			
 				
 			dispatchRemoving();
-			if(_toViewState)
-				_navigator.textureManager.switchToState(_toViewState.textureState);
-			_navigator.showViewState(_toViewState);
+			if(_toView)
+				_navigator.textureManager.switchToState(_toView.state.textureState);
+			_navigator.showView(_toView);
 			dispatchAdding();
 				
 			var animations:Array = [];
-			if(fromAnimation && fromViewState)
+			if(fromAnimation && fromView)
 			{
-				fromAnimation.target = fromViewState.getView();
+				fromAnimation.target = fromView.view;
 				animations.push(fromAnimation);
 			}
-			if(toAnimation && toViewState)
+			if(toAnimation && toView)
 			{
-				toAnimation.target = toViewState.getView();
+				toAnimation.target = toView.view;
 				animations.push(toAnimation);
 			}
 			
@@ -137,8 +138,8 @@ package com.in4ray.gaming.transitions
 		{
 			_isPlaying = false;
 			
-			_navigator.hideViewState(_fromViewState);
-			_navigator.showViewState(_toViewState);
+			_navigator.hideView(_fromView);
+			_navigator.showView(_toView);
 			dispatchRemoved();
 			dispatchAdded();
 			

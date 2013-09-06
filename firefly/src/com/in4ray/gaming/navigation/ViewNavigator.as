@@ -156,14 +156,15 @@ public class MainView extends Sprite
 		 *  
 		 * @param viewClass View class that will be instantiated automatically.
 		 * @param name State name.
-		 * @param textureState Texture state that will be loadedwhen manager switches to this state.
+         * @param properties A hash of properties to set on the view.
+         * @param textureState Texture state that will be loadedwhen manager switches to this state.
 		 * @param creaionPolicy Createion policy for creating view class.
 		 * 
 		 * @see com.in4ray.games.core.consts.CreationPolicy
 		 */		
-		public function addView(viewClass:Class, name:String, textureState:TextureState = null, creaionPolicy:String = CreationPolicy.ONDEMAND):void
+		public function addView(viewClass:Class, name:String, properties:Object = null, textureState:TextureState = null, creaionPolicy:String = CreationPolicy.ONDEMAND):void
 		{
-			_viewStates[name] = new ViewState(viewClass, false, name, textureState, creaionPolicy);
+			_viewStates[name] = new ViewState(viewClass, false, name, properties, textureState, creaionPolicy);
 			if(textureState)
 				textureManager.addState(textureState);
 		}
@@ -173,14 +174,15 @@ public class MainView extends Sprite
 		 *  
 		 * @param viewClass View class that will be instantiated automatically.
 		 * @param name State name.
+         * @param properties A hash of properties to set on the view.
 		 * @param textureState Texture state that will be loadedwhen manager switches to this state.
 		 * @param creaionPolicy Createion policy for creating view class.
 		 * 
 		 * @see com.in4ray.games.core.consts.CreationPolicy
 		 */		
-		public function addPopUpView(viewClass:Class, name:String, textureState:TextureState = null, creaionPolicy:String = CreationPolicy.ONDEMAND):void
+		public function addPopUpView(viewClass:Class, name:String, properties:Object = null, textureState:TextureState = null, creaionPolicy:String = CreationPolicy.ONDEMAND):void
 		{
-			_viewStates[name] = new ViewState(viewClass, true, name, textureState, creaionPolicy);
+			_viewStates[name] = new ViewState(viewClass, true, name, properties, textureState, creaionPolicy);
 			if(textureState)
 				textureManager.addState(textureState);
 		}
@@ -318,51 +320,52 @@ public class MainView extends Sprite
 		
 		//************************ states *****************************/
 		private var _viewStates:Dictionary = new Dictionary();
-		
+
 		/**
 		 * Current view class. 
 		 */		
-		public var currentViewState:ViewState;
+		public var currentView:View;
 		
 		/**
 		 * @private 
 		 */
 		protected function startTransitionHandler(event:ViewStateEvent):void
 		{
-			if(event.type == ViewStateEvent.BACK && currentPopUpState)
+			if(event.type == ViewStateEvent.BACK && currentPopUp)
 			{
-				closePoPupHandler(new ViewStateEvent(ViewStateEvent.BACK, currentPopUpState.name));
+				closePoPupHandler(new ViewStateEvent(ViewStateEvent.BACK, currentPopUp.state.name));
 				return;
 			}
 			
 			var toState:ViewState;
 			if(event.state)
 				toState = _viewStates[event.state];
-			else if(currentViewState)
-				toState = _viewStates[resolveToState(event.type, currentViewState.name)];
+			else if(currentView)
+				toState = _viewStates[resolveToState(event.type, currentView.state.name)];
 			
 			if(toState)
 			{
-				var fromState:ViewState = currentViewState;
+				var fromView:View = currentView;
+                var toView:View = new View(toState, toState.getView(event.properties));
 				
-				CONFIG::debugging {trace("[in4ray] " + event.type + " [" + (fromState ? fromState.viewClass : null) + "] -> [" + (toState ? toState.viewClass : null) + "]")};
+				CONFIG::debugging {trace("[in4ray] " + event.type + " [" + (fromView ? fromView.state.viewClass : null) + "] -> [" + (toState ? toState.viewClass : null) + "]")};
 				
 				if(!toState.popUp)
 				{
-					currentViewState = toState;
+					currentView = toView;
 				}
 				else
 				{
-					currentPopUpState = toState;
+					currentPopUp = toView;
 					showPoPupCover();
 				}
-				
-				var transition:ITransition = getAppropriateTransition(event.type, fromState, toState);
-				transition.play((toState.popUp ? null : fromState), toState);
+
+				var transition:ITransition = getAppropriateTransition(event.type, fromView ? fromView.state : null, toState);
+				transition.play(toState.popUp ? null : fromView, toView);
 			}
 		}
 		
-		private var currentPopUpState:ViewState;
+		private var currentPopUp:View;
 		
 		/**
 		 * Popup cover that will be shown under popup to emphasize it.  
@@ -392,11 +395,10 @@ public class MainView extends Sprite
 		 */
 		protected function closePoPupHandler(event:ViewStateEvent):void
 		{
-			var state:ViewState = _viewStates[event.state];
-			if(state)
+			if(currentPopUp)
 			{
-				_container.removeChild(state.getView());
-				currentPopUpState = null;
+				_container.removeChild(currentPopUp.view);
+				currentPopUp = null;
 				hidePoPupCover();
 			}
 		}
@@ -404,19 +406,23 @@ public class MainView extends Sprite
 		/**
 		 * @private 
 		 */		
-		public function hideViewState(viewState:ViewState):void
+		public function hideView(view:View):void
 		{
-			if(viewState)
-				_container.removeChild(viewState.getView());
+            if(view)
+                _container.removeChild(view.view);
 		}
 		
 		/**
 		 * @private 
 		 */	
-		public function showViewState(viewState:ViewState):void
+		public function showView(view:View):void
 		{
-			if(viewState && !_container.contains(viewState.getView()))
-				_container.addElement(viewState.getView());
+            if(view) {
+                var v:com.in4ray.gaming.components.Sprite = view.view;
+                if(!_container.contains(v)) {
+                    _container.addElement(v);
+                }
+            }
 		}
 		
 		//************************ transitions *****************************/

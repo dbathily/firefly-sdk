@@ -67,16 +67,29 @@ package com.in4ray.gaming.events
 			return _state;
 		}
 
-		/**
+        /**
+         * A hash of properties to set on the view.
+         *
+         * @default null
+         */
+        private var _properties:Object;
+
+        public function get properties():Object {
+            return _properties;
+        }
+
+        /**
 		 * Constructor.
 		 *  
 		 * @param type Event type.
 		 * @param state View state.
+         * @param properties A hash of properties to set on the view.
 		 */		
-		public function ViewStateEvent(type:String, state:String = "")
+		public function ViewStateEvent(type:String, state:String = "", properties:Object = null)
 		{
 			super(type, true);
 			_state = state;
+            _properties = properties;
 		}
 	}
 }

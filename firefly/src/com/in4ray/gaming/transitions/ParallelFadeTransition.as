@@ -36,11 +36,11 @@ package com.in4ray.gaming.transitions
 		{
 			super.animationComplete();
 			
-			if(_fromViewState)
-				_fromViewState.getView().alpha = 1;
+			if(_fromView)
+				_fromView.view.alpha = 1;
 			
-			if(_toViewState)
-				_toViewState.getView().alpha = 1;
+			if(_toView)
+				_toView.view.alpha = 1;
 		}
 	}
 }
