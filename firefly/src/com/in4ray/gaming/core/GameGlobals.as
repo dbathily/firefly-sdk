@@ -13,8 +13,10 @@ package com.in4ray.gaming.core
 	import com.in4ray.gaming.gp_internal;
 	import com.in4ray.gaming.components.flash.GameApplication;
 	import com.in4ray.gaming.consts.SystemType;
-	
-	import flash.geom.Point;
+import com.kurst.cfwrk.system.DeviceCapabilities;
+import com.kurst.cfwrk.system.data.DeviceInfo;
+
+import flash.geom.Point;
 	import flash.system.Capabilities;
 	
 	use namespace gp_internal;
@@ -37,6 +39,8 @@ package com.in4ray.gaming.core
 		 */		
 		gp_internal static function preinitialize(app:GameApplication):void
 		{
+            _deviceInfo = DeviceCapabilities.deviceInformation();
+
 			_stageSize = new Point(app.stage.stageWidth, app.stage.stageHeight);
 			
 			_defaultFrameRate = app.stage.frameRate;
@@ -178,5 +182,18 @@ package com.in4ray.gaming.core
 		{
 			return _defaultFrameRate;
 		}
+
+        /**
+         * @private
+         */
+        gp_internal static var _deviceInfo:DeviceInfo;
+
+        /**
+         * Device info
+         */
+        public static function get deviceInfo():DeviceInfo
+        {
+            return _deviceInfo;
+        }
 	}
 }

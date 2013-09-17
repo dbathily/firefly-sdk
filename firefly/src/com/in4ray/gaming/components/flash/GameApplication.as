@@ -19,6 +19,7 @@ import com.in4ray.gaming.events.StarlingEvent;
 import com.in4ray.gaming.gp_internal;
 import com.in4ray.gaming.layouts.$height;
 import com.in4ray.gaming.layouts.$width;
+import com.kurst.cfwrk.system.DeviceCapabilities;
 
 import flash.display.StageAlign;
 import flash.display.StageQuality;
@@ -101,9 +102,10 @@ public class MainView extends Sprite
             stage.align = StageAlign.TOP_LEFT;
             stage.quality = StageQuality.BEST;
 
-            Starling.handleLostContext = true;
-
+            DeviceCapabilities.init(stage);
             GameGlobals.preinitialize(this);
+
+            Starling.handleLostContext = DeviceCapabilities.handleLostContextOnDevice();
 
             stage.addEventListener(flash.events.Event.RESIZE, resizeHandler);
         }
@@ -329,7 +331,12 @@ public class CompanySplash extends Splash
 		 */		
 		protected function initStarling():void
 		{
-			_starlingInstance = new Starling(RootView, stage, new Rectangle(0, 0, GameGlobals.stageSize.x, GameGlobals.stageSize.y));
+			_starlingInstance = new Starling(RootView, stage, DeviceCapabilities.isDesktop() ?
+                    new Rectangle(0,0, stage.fullScreenWidth, stage.fullScreenHeight) :
+                    new Rectangle(0,0, GameGlobals.deviceInfo.width, GameGlobals.deviceInfo.height));
+            //_starlingInstance.stage.stageWidth = GameGlobals.deviceInfo.width / GameGlobals.deviceInfo.scale;
+            //_starlingInstance.stage.stageHeight = GameGlobals.deviceInfo.height / GameGlobals.deviceInfo.scale;
+
 			_starlingInstance.addEventListener(starling.events.Event.ROOT_CREATED, rootCreatedHandler);
 			_starlingInstance.start();
 		}
@@ -360,7 +367,7 @@ public class CompanySplash extends Splash
 		private function updateScaleFactor():void
 		{
 			if(GameGlobals.designSize && GameGlobals.stageSize)
-				GameGlobals._contentScaleFactor = Math.max(1, Math.max(GameGlobals.stageSize.x/TextureConsts.MAX_WIDTH, GameGlobals.stageSize.y/TextureConsts.MAX_HEIGHT));
+				GameGlobals._contentScaleFactor = GameGlobals.deviceInfo.scale; //Math.max(1, Math.max(GameGlobals.stageSize.x/TextureConsts.MAX_WIDTH, GameGlobals.stageSize.y/TextureConsts.MAX_HEIGHT));
 			
 			CONFIG::debugging {trace("[in4ray] Content scale factor " + GameGlobals.contentScaleFactor)};
 		}
