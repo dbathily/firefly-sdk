@@ -371,7 +371,7 @@ public class CompanySplash extends Splash
 		private function updateScaleFactor():void
 		{
 			if(GameGlobals.designSize && GameGlobals.stageSize)
-				GameGlobals._contentScaleFactor = GameGlobals.deviceInfo.scale; //Math.max(1, Math.max(GameGlobals.stageSize.x/TextureConsts.MAX_WIDTH, GameGlobals.stageSize.y/TextureConsts.MAX_HEIGHT));
+				GameGlobals._contentScaleFactor = Math.max(1, Math.max(GameGlobals.stageSize.x/TextureConsts.MAX_WIDTH, GameGlobals.stageSize.y/TextureConsts.MAX_HEIGHT));
 			
 			CONFIG::debugging {trace("[in4ray] Content scale factor " + GameGlobals.contentScaleFactor)};
 		}
