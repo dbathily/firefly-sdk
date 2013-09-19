@@ -106,7 +106,7 @@ public class MainView extends Sprite
             GameGlobals.preinitialize(this);
 
             Starling.handleLostContext = DeviceCapabilities.handleLostContextOnDevice();
-
+            this.setActualSize(stage.stageWidth, stage.stageHeight);
             stage.addEventListener(flash.events.Event.RESIZE, resizeHandler);
         }
 		
@@ -153,6 +153,7 @@ public class MainView extends Sprite
 			{
                 var root:RootView = Starling.current.root as RootView;
 				root.removeChildren();
+                this.setActualSize(_starlingInstance.stage.stageWidth, _starlingInstance.stage.stageHeight);
 				root.addElement(mainView, $width(100).pct, $height(100).pct);
 			}
 		}
@@ -332,10 +333,13 @@ public class CompanySplash extends Splash
 		protected function initStarling():void
 		{
 			_starlingInstance = new Starling(RootView, stage, DeviceCapabilities.isDesktop() ?
-                    new Rectangle(0,0, stage.fullScreenWidth, stage.fullScreenHeight) :
+                    new Rectangle(0,0, stage.stageWidth, stage.stageHeight) :
                     new Rectangle(0,0, GameGlobals.deviceInfo.width, GameGlobals.deviceInfo.height));
-            //_starlingInstance.stage.stageWidth = GameGlobals.deviceInfo.width / GameGlobals.deviceInfo.scale;
-            //_starlingInstance.stage.stageHeight = GameGlobals.deviceInfo.height / GameGlobals.deviceInfo.scale;
+
+            if(!DeviceCapabilities.isDesktop()) {
+                _starlingInstance.stage.stageWidth = GameGlobals.deviceInfo.width / GameGlobals.deviceInfo.scale;
+                _starlingInstance.stage.stageHeight = GameGlobals.deviceInfo.height / GameGlobals.deviceInfo.scale;
+            }
 
 			_starlingInstance.addEventListener(starling.events.Event.ROOT_CREATED, rootCreatedHandler);
 			_starlingInstance.start();
@@ -359,7 +363,7 @@ public class CompanySplash extends Splash
 			GameGlobals._stageSize = new Point(stage.stageWidth, stage.stageHeight);
 			
 			updateScaleFactor();
-			
+
 			if(stage.stageWidth > 0 && stage.stageHeight > 0)
 				setActualSize(stage.stageWidth, stage.stageHeight);
 		}
