@@ -331,9 +331,9 @@ public class MainView extends Sprite
 		 */
 		protected function startTransitionHandler(event:ViewStateEvent):void
 		{
-			if(event.type == ViewStateEvent.BACK && currentPopUp)
+			if(event.type == ViewStateEvent.BACK && popups.length > 0)
 			{
-				closePoPupHandler(new ViewStateEvent(ViewStateEvent.BACK, currentPopUp.state.name));
+				closePoPupHandler(new ViewStateEvent(ViewStateEvent.BACK, popups[popups.length - 1].state.name));
 				return;
 			}
 			
@@ -356,7 +356,7 @@ public class MainView extends Sprite
 				}
 				else
 				{
-					currentPopUp = toView;
+					popups.push(toView);
 					showPoPupCover();
 				}
 
@@ -365,7 +365,7 @@ public class MainView extends Sprite
 			}
 		}
 		
-		private var currentPopUp:View;
+		private var popups:Array = [];
 		
 		/**
 		 * Popup cover that will be shown under popup to emphasize it.  
@@ -386,7 +386,7 @@ public class MainView extends Sprite
 		 */
 		protected function hidePoPupCover():void
 		{
-			if(poPupCover)
+			if(poPupCover && popups.length <= 0)
 				_container.removeChild(poPupCover);
 		}
 		
@@ -395,10 +395,10 @@ public class MainView extends Sprite
 		 */
 		protected function closePoPupHandler(event:ViewStateEvent):void
 		{
-			if(currentPopUp)
+			if(popups.length > 0)
 			{
-				_container.removeChild(currentPopUp.view);
-				currentPopUp = null;
+                const currentPopUp:View = popups.pop();
+				_container.removeChild(currentPopUp.view, true);
 				hidePoPupCover();
 			}
 		}
@@ -409,7 +409,7 @@ public class MainView extends Sprite
 		public function hideView(view:View):void
 		{
             if(view)
-                _container.removeChild(view.view);
+                _container.removeChild(view.view, true);
 		}
 		
 		/**

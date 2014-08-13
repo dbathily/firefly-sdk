@@ -40,15 +40,16 @@
 * 	
 **********************************************************************************************************************************************************************************/
 package com.kurst.cfwrk.system {
-	import com.kurst.cfwrk.system.constants.DeviceOrientation;
-	import com.kurst.cfwrk.system.constants.OSList;
-	import com.kurst.cfwrk.system.constants.DeviceList;
-	import com.kurst.cfwrk.system.data.DeviceInfo;
-	import flash.display.Stage;
-	import flash.display.StageOrientation;
-	import flash.system.Capabilities;
+import com.kurst.cfwrk.system.constants.DeviceList;
+import com.kurst.cfwrk.system.constants.DeviceOrientation;
+import com.kurst.cfwrk.system.constants.OSList;
+import com.kurst.cfwrk.system.data.DeviceInfo;
 
-	/**
+import flash.display.Stage;
+import flash.display.StageOrientation;
+import flash.system.Capabilities;
+
+/**
 	 * Using values from the Stage and Capabilities classes, makes educated
 	 * guesses about the physical size and type of device this code is running on.
 	 */
@@ -408,15 +409,24 @@ package com.kurst.cfwrk.system {
 					result.supported	= true;
 					
 				} else if ( hwModel.indexOf( "iPad3" ) != -1 ) { // NEEDS TESTING
-					
-					result.width 		= 2048;
-					result.height 		= 1536;
-					result.device 		= DeviceList.IPAD_3;
-					result.scale 		= 2; 
-					result.os			= OSList.IOS;
-					result.supported	= true;
-					
-				} else if ( hwModel.indexOf( "iPhone5" ) != -1 ) {// NEEDS TESTING
+
+                    result.width 		= 2048;
+                    result.height 		= 1536;
+                    result.device 		= DeviceList.IPAD_3;
+                    result.scale 		= 2;
+                    result.os			= OSList.IOS;
+                    result.supported	= true;
+
+                } else if ( hwModel.indexOf( "iPad4" ) != -1 ) { // NEEDS TESTING
+
+                    result.width 		= 2048;
+                    result.height 		= 1536;
+                    result.device 		= DeviceList.IPAD_4;
+                    result.scale 		= 2;
+                    result.os			= OSList.IOS;
+                    result.supported	= true;
+
+                } else if ( hwModel.indexOf( "iPhone5" ) != -1 ) {// NEEDS TESTING
 	
 					result.width 		= 1136;
 					result.height 		= 640;
@@ -425,7 +435,16 @@ package com.kurst.cfwrk.system {
 					result.os			= OSList.IOS;
 					result.supported	= true; 
 					
-				} else if ( hwModel.indexOf( "iPod1" ) != -1 ) {// NEEDS TESTING
+				} else if ( hwModel.indexOf( "iPhone6" ) != -1 ) {// NEEDS TESTING
+
+                    result.width 		= 1136;
+                    result.height 		= 640;
+                    result.device 		= DeviceList.IPHONE_5S;
+                    result.scale 		= 2;
+                    result.os			= OSList.IOS;
+                    result.supported	= true;
+
+                } else if ( hwModel.indexOf( "iPod1" ) != -1 ) {// NEEDS TESTING
 	
 					result.width 		= 480;
 					result.height 		= 320;

@@ -12,6 +12,7 @@ package com.kurst.cfwrk.system.constants {
 		public static const IPHONE_4		: String 	= 'iPhone3,1';
 		public static const IPHONE_4S		: String 	= 'iPhone4,1';
 		public static const IPHONE_5		: String 	= 'iPhone5';
+        public static const IPHONE_5S		: String 	= 'iPhone6';
 		
 		// IOS Devices - iPod Touch
 		public static const IPOD_TOUCH_1	: String 	= 'iPod1';
@@ -25,6 +26,7 @@ package com.kurst.cfwrk.system.constants {
 		public static const IPAD_2			: String 	= 'iPad2';
 		public static const IPAD_MINI		: String 	= 'iPad2,5';
 		public static const IPAD_3			: String 	= 'iPad3';
+        public static const IPAD_4			: String 	= 'iPad4';
 		 
 		// Desktop 		
 		public static const DESKTOP			: String 	= 'desktop';
