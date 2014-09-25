@@ -444,6 +444,24 @@ import flash.system.Capabilities;
                     result.os			= OSList.IOS;
                     result.supported	= true;
 
+                } else if ( hwModel.indexOf( "iPhone7,2" ) != -1 ) {// NEEDS TESTING
+
+                    result.width 		= 1334;
+                    result.height 		= 750;
+                    result.device 		= DeviceList.IPHONE_6;
+                    result.scale 		= 2;
+                    result.os			= OSList.IOS;
+                    result.supported	= true;
+
+                } else if ( hwModel.indexOf( "iPhone7,1" ) != -1 ) {// NEEDS TESTING
+
+                    result.width 		= 2208;
+                    result.height 		= 1242;
+                    result.device 		= DeviceList.IPHONE_6PLUS;
+                    result.scale 		= 2;
+                    result.os			= OSList.IOS;
+                    result.supported	= true;
+
                 } else if ( hwModel.indexOf( "iPod1" ) != -1 ) {// NEEDS TESTING
 	
 					result.width 		= 480;
