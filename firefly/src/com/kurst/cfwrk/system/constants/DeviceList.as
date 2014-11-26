@@ -12,9 +12,9 @@ package com.kurst.cfwrk.system.constants {
 		public static const IPHONE_4		: String 	= 'iPhone3,1';
 		public static const IPHONE_4S		: String 	= 'iPhone4,1';
 		public static const IPHONE_5		: String 	= 'iPhone5';
-        public static const IPHONE_5S		: String 	= 'iPhone6';
-        public static const IPHONE_6		: String 	= 'iPhone7,2';
-        public static const IPHONE_6PLUS    : String 	= 'iPhone7,1';
+		public static const IPHONE_5S		: String 	= 'iPhone6';
+		public static const IPHONE_6		: String 	= 'iPhone7,2';
+		public static const IPHONE_6PLUS    	: String 	= 'iPhone7,1';
 
 		// IOS Devices - iPod Touch
 		public static const IPOD_TOUCH_1	: String 	= 'iPod1';
@@ -24,14 +24,15 @@ package com.kurst.cfwrk.system.constants {
 		public static const IPOD_TOUCH_5	: String 	= 'iPod5';
 		
 		// IOS Devices - iPads
-		public static const IPAD_1			: String 	= 'iPad1';
-		public static const IPAD_2			: String 	= 'iPad2';
+		public static const IPAD_1		: String 	= 'iPad1';
+		public static const IPAD_2		: String 	= 'iPad2';
 		public static const IPAD_MINI		: String 	= 'iPad2,5';
-		public static const IPAD_3			: String 	= 'iPad3';
-        public static const IPAD_4			: String 	= 'iPad4';
+		public static const IPAD_3		: String 	= 'iPad3';
+		public static const IPAD_4		: String 	= 'iPad4';
+		public static const IPAD_5		: String 	= 'iPad5';
 		 
 		// Desktop 		
-		public static const DESKTOP			: String 	= 'desktop';
+		public static const DESKTOP		: String 	= 'desktop';
 		
 		// ERROR
 		public static const DETECTION_ERROR	: String	= 'ERROR';
